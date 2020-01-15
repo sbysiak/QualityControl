@@ -1,0 +1,47 @@
+<map id="Framework/include/QualityControl/QcInfoLogger.h" name="Framework/include/QualityControl/QcInfoLogger.h">
+<area shape="rect" id="node2" href="$Check_8h_source.html" title="Framework/include/Quality\lControl/Check.h" alt="" coords="2117,95,2294,136"/>
+<area shape="rect" id="node3" href="$CheckRunner_8h.html" title="Framework/include/Quality\lControl/CheckRunner.h" alt="" coords="1378,184,1555,225"/>
+<area shape="rect" id="node6" href="$InfrastructureGenerator_8cxx.html" title="Framework/src/Infrastructure\lGenerator.cxx" alt="" coords="2587,273,2778,315"/>
+<area shape="rect" id="node8" href="$runMergerTest_8cxx.html" title="This is DPL workflow to see HistoMerger in action. " alt="" coords="2113,281,2335,307"/>
+<area shape="rect" id="node18" href="$CcdbDatabase_8cxx.html" title="Framework/src/CcdbDatabase.cxx" alt="" coords="2469,102,2694,129"/>
+<area shape="rect" id="node19" href="$DatabaseFactory_8cxx.html" title="Framework/src/DatabaseFactory.cxx" alt="" coords="2718,102,2957,129"/>
+<area shape="rect" id="node20" href="$DataDumpGui_8cxx.html" title="Framework/src/DataDumpGui.cxx" alt="" coords="2981,102,3203,129"/>
+<area shape="rect" id="node21" href="$MySqlDatabase_8cxx.html" title="Framework/src/MySqlDatabase.cxx" alt="" coords="3227,102,3458,129"/>
+<area shape="rect" id="node22" href="$ObjectsManager_8cxx.html" title="Framework/src/ObjectsManager.cxx" alt="" coords="3482,102,3715,129"/>
+<area shape="rect" id="node23" href="$RootClassFactory_8h.html" title="Framework/src/RootClassFactory.h" alt="" coords="3791,102,4022,129"/>
+<area shape="rect" id="node25" href="$TaskFactory_8cxx.html" title="Framework/src/TaskFactory.cxx" alt="" coords="3569,191,3780,218"/>
+<area shape="rect" id="node26" href="$TrendingTask_8cxx.html" title="Framework/src/TrendingTask.cxx" alt="" coords="4034,191,4251,218"/>
+<area shape="rect" id="node28" href="$QcInfoLogger_8cxx.html" title="Framework/src/QcInfoLogger.cxx" alt="" coords="4327,102,4543,129"/>
+<area shape="rect" id="node29" href="$RepositoryBenchmark_8cxx.html" title="Framework/src/Repository\lBenchmark.cxx" alt="" coords="4567,95,4743,136"/>
+<area shape="rect" id="node30" href="$runPostProcessing_8cxx.html" title="This is a standalone executable to run postprocessing. " alt="" coords="4767,102,5015,129"/>
+<area shape="rect" id="node31" href="$runQC_8cxx.html" title="This is an executable which generates a QC topology given a configuration file. " alt="" coords="5039,102,5215,129"/>
+<area shape="rect" id="node33" href="$TaskInterface_8cxx.html" title="Framework/src/TaskInterface.cxx" alt="" coords="5505,102,5724,129"/>
+<area shape="rect" id="node34" href="$TaskRunner_8cxx.html" title="Framework/src/TaskRunner.cxx" alt="" coords="5749,102,5958,129"/>
+<area shape="rect" id="node35" href="$TriggerHelpers_8cxx.html" title="Framework/src/TriggerHelpers.cxx" alt="" coords="5982,102,6205,129"/>
+<area shape="rect" id="node36" href="$Triggers_8cxx.html" title="Framework/src/Triggers.cxx" alt="" coords="6229,102,6414,129"/>
+<area shape="rect" id="node37" href="$testCcdbDatabase_8cxx.html" title="Framework/test/testCcdbDatabase.cxx" alt="" coords="6439,102,6689,129"/>
+<area shape="rect" id="node39" href="$testMonitorObject_8cxx.html" title="Framework/test/testMonitor\lObject.cxx" alt="" coords="6965,95,7147,136"/>
+<area shape="rect" id="node40" href="$testQcInfoLogger_8cxx.html" title="Framework/test/testQcInfo\lLogger.cxx" alt="" coords="7172,95,7351,136"/>
+<area shape="rect" id="node41" href="$testQuality_8cxx.html" title="Framework/test/testQuality.cxx" alt="" coords="7375,102,7580,129"/>
+<area shape="rect" id="node42" href="$testTaskInterface_8cxx.html" title="Framework/test/testTaskInterface.cxx" alt="" coords="7605,102,7849,129"/>
+<area shape="rect" id="node43" href="$MeanIsAbove_8cxx.html" title="Modules/Common/src\l/MeanIsAbove.cxx" alt="" coords="7873,95,8023,136"/>
+<area shape="rect" id="node44" href="$DaqTask_8cxx.html" title="Modules/Daq/src/DaqTask.cxx" alt="" coords="8048,102,8251,129"/>
+<area shape="rect" id="node45" href="$EverIncreasingGraph_8cxx.html" title="Modules/Daq/src/EverIncreasing\lGraph.cxx" alt="" coords="8275,95,8487,136"/>
+<area shape="rect" id="node46" href="$DigitsQcTask_8cxx.html" title="Modules/EMCAL/src/Digits\lQcTask.cxx" alt="" coords="8512,95,8693,136"/>
+<area shape="rect" id="node47" href="$RawTask_8cxx.html" title="Modules/EMCAL/src/RawTask.cxx" alt="" coords="8718,102,8946,129"/>
+<area shape="rect" id="node48" href="$BenchmarkTask_8cxx.html" title="Modules/Example/src\l/BenchmarkTask.cxx" alt="" coords="8970,95,9118,136"/>
+<area shape="rect" id="node49" href="$ExampleTask_8cxx.html" title="Modules/Example/src\l/ExampleTask.cxx" alt="" coords="9142,95,9290,136"/>
+<area shape="rect" id="node50" href="$SkeletonTask_8cxx.html" title="Modules/Skeleton/src\l/SkeletonTask.cxx" alt="" coords="9314,95,9462,136"/>
+<area shape="rect" id="node51" href="$TOFTask_8cxx.html" title="Modules/TOF/src/TOFTask.cxx" alt="" coords="9486,102,9693,129"/>
+<area shape="rect" id="node52" href="$PID_8cxx.html" title="Modules/TPC/src/PID.cxx" alt="" coords="9717,102,9893,129"/>
+<area shape="rect" id="node15" href="$CheckRunnerFactory_8h.html" title="Framework/include/Quality\lControl/CheckRunnerFactory.h" alt="" coords="1891,184,2093,225"/>
+<area shape="rect" id="node4" href="$CheckRunner_8cxx.html" title="Framework/src/CheckRunner.cxx" alt="" coords="5,281,224,307"/>
+<area shape="rect" id="node5" href="$CheckRunnerFactory_8cxx.html" title="Framework/src/CheckRunner\lFactory.cxx" alt="" coords="1895,273,2089,315"/>
+<area shape="rect" id="node7" href="$runBasic_8cxx.html" title="This is an executable showing QC Task&#39;s usage in Data Processing Layer. " alt="" coords="248,281,437,307"/>
+<area shape="rect" id="node9" href="$runTPCQCPID_8cxx.html" title="run TPC PID QC task, reading tracks from file for the moment " alt="" coords="461,281,688,307"/>
+<area shape="rect" id="node10" href="$testCheckRunner_8cxx.html" title="Framework/test/testCheck\lRunner.cxx" alt="" coords="1378,273,1555,315"/>
+<area shape="rect" id="node11" href="$testCheckWorkflow_8cxx.html" title="Framework/test/testCheck\lWorkflow.cxx" alt="" coords="713,273,890,315"/>
+<area shape="rect" id="node12" href="$testWorkflow_8cxx.html" title="Framework/test/testWorkflow.cxx" alt="" coords="915,281,1133,307"/>
+<area shape="rect" id="node14" href="$runTOF_8cxx.html" title="This is an executable showing QC Task&#39;s usage in Data Processing Layer. " alt="" coords="1158,281,1354,307"/>
+<area shape="rect" id="node24" href="$PostProcessingFactory_8cxx.html" title="Framework/src/PostProcessing\lFactory.cxx" alt="" coords="3804,184,4009,225"/>
+</map>

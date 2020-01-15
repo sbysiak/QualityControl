@@ -1,0 +1,9 @@
+<map id="Modules/TOF/test/testTOF.cxx" name="Modules/TOF/test/testTOF.cxx">
+<area shape="rect" id="node2" href="$TaskFactory_8h.html" title="QualityControl/TaskFactory.h" alt="" coords="625,80,819,107"/>
+<area shape="rect" id="node4" href="$TaskConfig_8h.html" title="QualityControl/TaskConfig.h" alt="" coords="713,304,899,331"/>
+<area shape="rect" id="node7" href="$TaskInterface_8h.html" title="QualityControl/TaskInterface.h" alt="" coords="622,155,822,181"/>
+<area shape="rect" id="node11" href="$Activity_8h.html" title="QualityControl/Activity.h" alt="" coords="1129,229,1293,256"/>
+<area shape="rect" id="node12" href="$ObjectsManager_8h.html" title="QualityControl/ObjectsManager.h" alt="" coords="359,229,573,256"/>
+<area shape="rect" id="node13" href="$MonitorObject_8h.html" title="QualityControl/MonitorObject.h" alt="" coords="249,304,451,331"/>
+<area shape="rect" id="node17" href="$Quality_8h.html" title="QualityControl/Quality.h" alt="" coords="361,379,523,405"/>
+</map>

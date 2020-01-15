@@ -1,0 +1,9 @@
+<map id="Modules/Daq/test/testQcDaq.cxx" name="Modules/Daq/test/testQcDaq.cxx">
+<area shape="rect" id="node2" href="$DaqTask_8h.html" title="Daq/DaqTask.h" alt="" coords="687,80,801,107"/>
+<area shape="rect" id="node3" href="$TaskInterface_8h.html" title="QualityControl/TaskInterface.h" alt="" coords="644,155,844,181"/>
+<area shape="rect" id="node10" href="$Activity_8h.html" title="QualityControl/Activity.h" alt="" coords="1242,229,1406,256"/>
+<area shape="rect" id="node11" href="$ObjectsManager_8h.html" title="QualityControl/ObjectsManager.h" alt="" coords="383,229,598,256"/>
+<area shape="rect" id="node12" href="$MonitorObject_8h.html" title="QualityControl/MonitorObject.h" alt="" coords="186,304,387,331"/>
+<area shape="rect" id="node16" href="$Quality_8h.html" title="QualityControl/Quality.h" alt="" coords="437,379,598,405"/>
+<area shape="rect" id="node17" href="$TaskConfig_8h.html" title="QualityControl/TaskConfig.h" alt="" coords="463,304,649,331"/>
+</map>

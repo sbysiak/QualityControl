@@ -1,0 +1,10 @@
+<map id="Modules/Skeleton/src/SkeletonTask.cxx" name="Modules/Skeleton/src/SkeletonTask.cxx">
+<area shape="rect" id="node4" href="$QcInfoLogger_8h.html" title="QualityControl/QcInfoLogger.h" alt="" coords="435,95,634,121"/>
+<area shape="rect" id="node6" href="$SkeletonTask_8h.html" title="Skeleton/SkeletonTask.h" alt="" coords="659,95,827,121"/>
+<area shape="rect" id="node7" href="$TaskInterface_8h.html" title="QualityControl/TaskInterface.h" alt="" coords="644,169,844,196"/>
+<area shape="rect" id="node14" href="$Activity_8h.html" title="QualityControl/Activity.h" alt="" coords="1242,244,1406,271"/>
+<area shape="rect" id="node15" href="$ObjectsManager_8h.html" title="QualityControl/ObjectsManager.h" alt="" coords="383,244,598,271"/>
+<area shape="rect" id="node16" href="$MonitorObject_8h.html" title="QualityControl/MonitorObject.h" alt="" coords="186,319,387,345"/>
+<area shape="rect" id="node20" href="$Quality_8h.html" title="QualityControl/Quality.h" alt="" coords="437,393,598,420"/>
+<area shape="rect" id="node21" href="$TaskConfig_8h.html" title="QualityControl/TaskConfig.h" alt="" coords="463,319,649,345"/>
+</map>

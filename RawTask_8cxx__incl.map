@@ -1,0 +1,10 @@
+<map id="Modules/EMCAL/src/RawTask.cxx" name="Modules/EMCAL/src/RawTask.cxx">
+<area shape="rect" id="node6" href="$QcInfoLogger_8h.html" title="QualityControl/QcInfoLogger.h" alt="" coords="413,87,612,114"/>
+<area shape="rect" id="node8" href="$RawTask_8h.html" title="EMCAL/RawTask.h" alt="" coords="637,87,775,114"/>
+<area shape="rect" id="node9" href="$TaskInterface_8h.html" title="QualityControl/TaskInterface.h" alt="" coords="883,169,1083,196"/>
+<area shape="rect" id="node16" href="$Activity_8h.html" title="QualityControl/Activity.h" alt="" coords="1115,244,1279,271"/>
+<area shape="rect" id="node17" href="$ObjectsManager_8h.html" title="QualityControl/ObjectsManager.h" alt="" coords="337,244,552,271"/>
+<area shape="rect" id="node18" href="$MonitorObject_8h.html" title="QualityControl/MonitorObject.h" alt="" coords="508,319,709,345"/>
+<area shape="rect" id="node22" href="$Quality_8h.html" title="QualityControl/Quality.h" alt="" coords="499,393,660,420"/>
+<area shape="rect" id="node23" href="$TaskConfig_8h.html" title="QualityControl/TaskConfig.h" alt="" coords="195,319,382,345"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="Modules/EMCAL/test/testEMCAL.cxx" name="Modules/EMCAL/test/testEMCAL.cxx">
+<area shape="rect" id="node2" href="$TaskFactory_8h.html" title="QualityControl/TaskFactory.h" alt="" coords="625,95,819,121"/>
+<area shape="rect" id="node4" href="$TaskConfig_8h.html" title="QualityControl/TaskConfig.h" alt="" coords="713,319,899,345"/>
+<area shape="rect" id="node7" href="$TaskInterface_8h.html" title="QualityControl/TaskInterface.h" alt="" coords="622,169,822,196"/>
+<area shape="rect" id="node11" href="$Activity_8h.html" title="QualityControl/Activity.h" alt="" coords="1129,244,1293,271"/>
+<area shape="rect" id="node12" href="$ObjectsManager_8h.html" title="QualityControl/ObjectsManager.h" alt="" coords="359,244,573,271"/>
+<area shape="rect" id="node13" href="$MonitorObject_8h.html" title="QualityControl/MonitorObject.h" alt="" coords="249,319,451,345"/>
+<area shape="rect" id="node17" href="$Quality_8h.html" title="QualityControl/Quality.h" alt="" coords="361,393,523,420"/>
+</map>
