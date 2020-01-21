@@ -38,7 +38,7 @@
           "once"
         ]
       },
-      "ExampleTrend": {
+      "ExampleTrend_sbysiak": {
         "active": "true",
         "className": "o2::quality_control::postprocessing::TrendingTask",
         "moduleName": "QualityControl",
@@ -46,7 +46,7 @@
         "dataSources": [
           {
             "type": "repository",
-            "path": "qc/TST/QcTask",
+            "path": "qc/TST/QcTask_sbysiak",
             "name": "example",
             "reductorName": "o2::quality_control_modules::common::TH1Reductor",
             "moduleName": "QcCommon"
@@ -60,6 +60,13 @@
           }
         ],
         "plots": [
+          {
+              "name": "colormap_mean_stddec",
+              "title": "Mean vs stddev of the example histogram",
+              "varexp": "example.mean:example.stddev",
+              "selection": "example.entries > 3",
+              "option": "colz"
+          },
           {
             "name": "mean_of_histogram",
             "title": "Mean trend of the example histogram",

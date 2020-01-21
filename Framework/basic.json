@@ -23,13 +23,13 @@
       }
     },
     "tasks": {
-      "QcTask": {
+      "QcTask_sbysiak": {
         "active": "true",
         "className": "o2::quality_control_modules::skeleton::SkeletonTask",
         "moduleName": "QcSkeleton",
         "detectorName": "TST",
         "cycleDurationSeconds": "10",
-        "maxNumberCycles": "-1",
+        "maxNumberCycles": "10",
         "dataSource_comment": "The other type of dataSource is \"direct\", see basic-no-sampling.json.",
         "dataSource": {
           "type": "dataSamplingPolicy",
@@ -49,7 +49,7 @@
         "policy": "OnAny",
         "dataSource": [{
           "type": "Task",
-          "name": "QcTask",
+          "name": "QcTask_sbysiak",
           "MOs": ["example"]
         }]
       }
@@ -64,7 +64,7 @@
       "samplingConditions": [
         {
           "condition": "random",
-          "fraction": "0.1",
+          "fraction": "1.0",
           "seed": "1234"
         }
       ],
