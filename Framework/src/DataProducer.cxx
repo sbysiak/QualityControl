@@ -46,6 +46,8 @@ framework::AlgorithmSpec
     [=](InitContext&) {
       // this is the initialization code
       std::default_random_engine generator(time(nullptr));
+      std::normal_distribution<double> gauss_1(25,3);
+      std::normal_distribution<double> gauss_2(10,2);
       std::shared_ptr<Timer> timer = nullptr;
 
       int messageCounter = 0;
@@ -59,7 +61,7 @@ framework::AlgorithmSpec
       return [=](ProcessingContext& processingContext) mutable {
         // everything inside this lambda function is invoked in a loop, because it this Data Processor has no inputs
 
-        // setting up the timer
+        // setting up the timerdefault_random_engine
         if (!timer) {
           timer = std::make_shared<Timer>();
           timer->reset(static_cast<int>(1000000.0 / rate));
@@ -72,12 +74,15 @@ framework::AlgorithmSpec
         timer->increment();
 
         // generating data
-        size_t length = minSize + (generator() % (maxSize - minSize));
+        // size_t length = minSize + (generator() % (maxSize - minSize));
+        size_t length = minSize + (int(gauss_2(generator)) % (maxSize - minSize));
         auto data = processingContext.outputs().make<char>({ output.origin, output.description, output.subSpec },
                                                            length);
         if (fill) {
           for (auto&& item : data) {
-            item = static_cast<char>(generator());
+              // item = static_cast<char>(generator());
+              item = static_cast<char>(int(gauss_1(generator)));
+              // item = static_cast<char>(5);
           }
         }
 
