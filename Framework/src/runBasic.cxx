@@ -87,12 +87,17 @@ WorkflowSpec defineDataProcessing(const ConfigContext& config)
   WorkflowSpec specs;
 
   // The producer to generate some data in the workflow
-  DataProcessorSpec producer = getDataProducerSpec(1, 10000, 10);
+  DataProcessorSpec producer = getDataProducerSpec(1, 100, 10);
   specs.push_back(producer);
 
   // Path to the config file
   std::string qcConfigurationSource = getConfigPath(config);
+<<<<<<< HEAD
   ILOG(Info, Ops) << "Using config file '" << qcConfigurationSource << "'" << ENDM;
+=======
+  LOG(INFO) << "Using config file '" << qcConfigurationSource << "'";
+  LOG(INFO) << " ::MY LOG:: ";
+>>>>>>> 8678f352fdc7ea2d21709e7d7ebafec8da0a1cc9
 
   // Generation of Data Sampling infrastructure
   DataSampling::GenerateInfrastructure(specs, qcConfigurationSource);

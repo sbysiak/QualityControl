@@ -37,7 +37,7 @@ void SkeletonTask::initialize(o2::framework::InitContext& /*ctx*/)
     ILOG(Info, Devel) << "Custom parameter - myOwnKey: " << param->second << ENDM;
   }
 
-  mHistogram = new TH1F("example", "example", 20, 0, 30000);
+  mHistogram = new TH1F("example", "example", 30, 0, 30);
   getObjectsManager()->startPublishing(mHistogram);
   try {
     getObjectsManager()->addMetadata(mHistogram->GetName(), "custom", "34");
@@ -79,10 +79,14 @@ void SkeletonTask::monitorData(o2::framework::ProcessingContext& ctx)
     if (input.header != nullptr && input.payload != nullptr) {
       const auto* header = header::get<header::DataHeader*>(input.header);
       // get payload of a specific input, which is a char array.
-      // const char* payload = input.payload;
-
+      const char* payload = input.payload;
+      // ILOG(Info) << "SkeletonTask:: payload = " << payload << "\n" << ENDM;
+      for(int i=0; i<header->payloadSize; i++){
+            // ILOG(Info) << "SkeletonTask:: \t\t payload[i] = " << payload[i] << "\t --int-->" << int(payload[i]) << ENDM;
+            mHistogram->Fill(int(payload[i]));
+      }
       // for the sake of an example, let's fill the histogram with payload sizes
-      mHistogram->Fill(header->payloadSize);
+      // mHistogram->Fill(header->payloadSize);
     }
   }
 
