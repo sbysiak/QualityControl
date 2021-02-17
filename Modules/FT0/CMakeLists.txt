@@ -3,10 +3,12 @@
 add_library(QcFT0)
 
 target_sources(QcFT0 PRIVATE src/BasicDigitQcTask.cxx
+                             src/BasicDigitQcTaskPlus.cxx
                              src/ChannelsCheck.cxx
                              src/DigitsCheck.cxx
                              src/MergedTreeCheck.cxx
-                             src/TreeReaderPostProcessing.cxx)
+                             src/TreeReaderPostProcessing.cxx
+			     src/HistDiffReductor.cxx)
 
 target_include_directories(
   QcFT0
@@ -25,11 +27,13 @@ install(TARGETS QcFT0
 
 add_root_dictionary(QcFT0
         HEADERS include/FT0/BasicDigitQcTask.h
+                include/FT0/BasicDigitQcTaskPlus.h
                 include/FT0/ChannelsCheck.h
                 include/FT0/DigitsCheck.h
                 include/FT0/Utilities.h
                 include/FT0/MergedTreeCheck.h
                 include/FT0/TreeReaderPostProcessing.h
+		include/FT0/HistDiffReductor.h
         LINKDEF include/FT0/LinkDef.h
         BASENAME QcFT0)
 
