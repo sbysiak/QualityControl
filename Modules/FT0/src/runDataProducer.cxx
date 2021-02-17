@@ -39,6 +39,7 @@ class FT0DataProducer : public Task
 
     auto filename = ic.options().get<std::string>("ft0-input-digit-file");
     mFile = std::make_unique<TFile>(filename.c_str(), "OLD");
+    mCounterTF=0;
     if (!mFile->IsOpen()) {
       LOG(ERROR) << "Cannot open the " << filename.c_str() << " file !";
       throw std::runtime_error("cannot open input digits file");
@@ -56,19 +57,19 @@ class FT0DataProducer : public Task
     mTree->SetBranchAddress("FT0DIGITSBC", &pdigits);
     mTree->SetBranchAddress("FT0DIGITSCH", &pchannels);
 
-    for (int tFrame = 0; tFrame < mTree->GetEntries(); ++tFrame) {
-      mTree->GetEntry(tFrame);
-      pc.outputs().snapshot(Output{ "FT0", "DIGITSBC", 0, Lifetime::Timeframe }, digits);
-      pc.outputs().snapshot(Output{ "FT0", "DIGITSCH", 0, Lifetime::Timeframe }, channels);
+    if (mCounterTF>=mTree->GetEntries()) {
+      mCounterTF=0;
     }
-
-    pc.services().get<ControlService>().endOfStream();
-    pc.services().get<ControlService>().readyToQuit(QuitRequest::Me);
+    mTree->GetEntry(mCounterTF);
+    pc.outputs().snapshot(Output{ "FT0", "DIGITSBC", 0, Lifetime::Timeframe }, digits);
+    pc.outputs().snapshot(Output{ "FT0", "DIGITSCH", 0, Lifetime::Timeframe }, channels);
+    mCounterTF++;
   }
 
  private:
   std::unique_ptr<TTree> mTree;
   std::unique_ptr<TFile> mFile;
+  unsigned int mCounterTF;
 };
 
 } // namespace o2::quality_control_modules::ft0

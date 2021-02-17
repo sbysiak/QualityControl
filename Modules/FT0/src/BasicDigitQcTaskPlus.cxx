@@ -64,6 +64,7 @@ void BasicDigitQcTaskPlus::startOfActivity(Activity& activity)
   mTimeHistogram->Reset();
   mChargeHistogram->Reset();
   mChargeHistogramCurrent->Reset();
+  mAmplitudeAndTime->Reset();
   mChargeTrend->Set(0);
   mTTree->Reset();
 }
@@ -82,11 +83,12 @@ void BasicDigitQcTaskPlus::monitorData(o2::framework::ProcessingContext& ctx)
   countIter++;
   countIterTotal++;
   // get separate hist for each TF
-  //mTimeHistogram->Reset();
-  //mChargeHistogram->Reset();
+  mTimeHistogram->Reset();
+  mChargeHistogram->Reset();
   mChargeHistogramCurrent->Reset();
-  //mTTree->Reset();
-  //mAmplitudeAndTime->Reset();
+  mChargeTrend->Set(0);
+  mTTree->Reset();
+  mAmplitudeAndTime->Reset();
    
   auto channels = ctx.inputs().get<gsl::span<o2::ft0::ChannelData>>("channels");
   auto digits = ctx.inputs().get<gsl::span<o2::ft0::Digit>>("digits");
