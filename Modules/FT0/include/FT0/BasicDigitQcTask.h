@@ -25,6 +25,8 @@
 #include "TMultiGraph.h"
 #include "Rtypes.h"
 
+#include "FT0/Utilities.h"
+
 using namespace o2::quality_control::core;
 
 namespace o2::quality_control_modules::ft0
@@ -53,6 +55,7 @@ class BasicDigitQcTask final : public TaskInterface
   std::unique_ptr<TH1F> mTimeHistogram;
   std::unique_ptr<TH2F> mAmplitudeAndTime;
   std::unique_ptr<TTree> mTTree;
+  EventWithChannelData mEvent;
 };
 
 } // namespace o2::quality_control_modules::ft0

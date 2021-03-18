@@ -45,6 +45,9 @@ void BasicDigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
   getObjectsManager()->startPublishing(mTimeHistogram.get());
   getObjectsManager()->startPublishing(mTTree.get());
   getObjectsManager()->startPublishing(mAmplitudeAndTime.get());
+
+  mTTree->Branch("EventWithChannelData", &mEvent);
+
 }
 
 void BasicDigitQcTask::startOfActivity(Activity& activity)
@@ -62,20 +65,16 @@ void BasicDigitQcTask::startOfCycle()
 
 void BasicDigitQcTask::monitorData(o2::framework::ProcessingContext& ctx)
 {
-
   auto channels = ctx.inputs().get<gsl::span<o2::ft0::ChannelData>>("channels");
   auto digits = ctx.inputs().get<gsl::span<o2::ft0::Digit>>("digits");
 
   std::vector<o2::ft0::ChannelData> channelDataCopy(channels.begin(), channels.end());
   std::vector<o2::ft0::Digit> digitDataCopy(digits.begin(), digits.end());
 
-  EventWithChannelData event;
-  mTTree->Branch("EventWithChannelData", &event);
-
   for (auto& digit : digits) {
     auto currentChannels = digit.getBunchChannelData(channels);
     auto timestamp = o2::InteractionRecord::bc2ns(digit.getBC(), digit.getOrbit());
-    event = EventWithChannelData{ digit.getEventID(), digit.getBC(), digit.getOrbit(), timestamp, std::vector<o2::ft0::ChannelData>(currentChannels.begin(), currentChannels.end()) };
+    mEvent = EventWithChannelData{ digit.getEventID(), digit.getBC(), digit.getOrbit(), timestamp, std::vector<o2::ft0::ChannelData>(currentChannels.begin(), currentChannels.end()) };
     mTTree->Fill();
 
     for (auto& channel : currentChannels) {
