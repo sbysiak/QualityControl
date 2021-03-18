@@ -26,6 +26,9 @@
 #include "DataFormatsFT0/ChannelData.h"
 #include <Framework/InputRecord.h>
 
+//#include <unistd.h>
+
+
 namespace o2::quality_control_modules::ft0
 {
 
@@ -51,6 +54,12 @@ void BasicDigitQcTaskPlus::initialize(o2::framework::InitContext& /*ctx*/)
   getObjectsManager()->startPublishing(mTTree.get());
   getObjectsManager()->startPublishing(mAmplitudeAndTime.get());
 
+
+  //Float_t randFloat;
+  //mTTree->Branch("randomFloat", &randFloat);
+  //EventWithChannelData event;
+  mTTree->Branch("EventWithChannelData", &event);
+
   mChargeTrend->SetName("ChargeTrend");
   mChargeTrend->SetTitle("mean of charge per cycle");
   mChargeTrend->GetXaxis()->SetTimeDisplay(1);
@@ -64,6 +73,7 @@ void BasicDigitQcTaskPlus::startOfActivity(Activity& activity)
   mTimeHistogram->Reset();
   mChargeHistogram->Reset();
   mChargeHistogramCurrent->Reset();
+  mAmplitudeAndTime->Reset();
   mChargeTrend->Set(0);
   mTTree->Reset();
 }
@@ -83,10 +93,11 @@ void BasicDigitQcTaskPlus::monitorData(o2::framework::ProcessingContext& ctx)
   countIterTotal++;
   // get separate hist for each TF
   //mTimeHistogram->Reset();
-  //mChargeHistogram->Reset();
+//   mChargeHistogram->Reset();
   mChargeHistogramCurrent->Reset();
   //mTTree->Reset();
-  //mAmplitudeAndTime->Reset();
+//  mAmplitudeAndTime->Reset();
+  //reset();
    
   auto channels = ctx.inputs().get<gsl::span<o2::ft0::ChannelData>>("channels");
   auto digits = ctx.inputs().get<gsl::span<o2::ft0::Digit>>("digits");
@@ -94,16 +105,17 @@ void BasicDigitQcTaskPlus::monitorData(o2::framework::ProcessingContext& ctx)
   std::vector<o2::ft0::ChannelData> channelDataCopy(channels.begin(), channels.end());
   std::vector<o2::ft0::Digit> digitDataCopy(digits.begin(), digits.end());
 
-  EventWithChannelData event;
-  mTTree->Branch("EventWithChannelData", &event);
 
   int d=0;
   int c=0;
   for (auto& digit : digits) {
     auto currentChannels = digit.getBunchChannelData(channels);
     auto timestamp = o2::InteractionRecord::bc2ns(digit.getBC(), digit.getOrbit());
+   
+    timestamps.push_back(timestamp);
     event = EventWithChannelData{ digit.getEventID(), digit.getBC(), digit.getOrbit(), timestamp, std::vector<o2::ft0::ChannelData>(currentChannels.begin(), currentChannels.end()) };
-    //mTTree->Fill();
+    //randFloat = d*d*d/(2+d);
+    mTTree->Fill();
     //ILOG(Info) << "\t\t\tdigit: " << std::to_string(d) << "\n";
     d++;
     
@@ -114,10 +126,15 @@ void BasicDigitQcTaskPlus::monitorData(o2::framework::ProcessingContext& ctx)
       mTimeHistogram->Fill(channel.CFDTime);
       mAmplitudeAndTime->Fill(channel.QTCAmpl, channel.CFDTime);
       //ILOG(Info) << "\t\t\t\tchannel: " << std::to_string(c) << "\n";
+      //std::cout << "\t\tloop [" << d <<"/"<< c << "]: " << "event=" <<digit.getEventID() << ", orbit="<< digit.getOrbit() << ", BC="<<digit.getBC()<<", timestamp="<<timestamp  << "\n";
       c++;
+      //unsigned int microseconds=100*1000;
+      //usleep( microseconds );
+      //boost::this_thread::sleep( boost::posix_time::milliseconds(10) );
     }
   }
 
+  
   // saving TTree if you want to read it from disk
   // its required to make a copy of tree - but it is only for debbuging
 
@@ -133,6 +150,41 @@ void BasicDigitQcTaskPlus::endOfCycle()
 {
   mChargeTrend->SetPoint(mChargeTrend->GetN(), TDatime().Convert(), mChargeHistogramCurrent->GetMean());
   ILOG(Info, Support) << "endOfCycle" << ENDM;
+  ILOG(Info) << "\n\n\nLegth of timestamps vector: " << timestamps.size() << "\n\n\n\n" << ENDM;
+  
+  double ts_start=*std::min_element(timestamps.begin(), timestamps.end());
+  double ts_stop=*std::max_element(timestamps.begin(), timestamps.end());
+  double ts_mean=0;
+  //std::cout << ts_start << ts_stop << ts_mean << "\n";
+  //getObjectsManager()->addMetadata(mChargeHistogramCurrent->GetName(), "timeStart", std::to_string(ts_start));
+  //getObjectsManager()->addMetadata(mChargeHistogramCurrent->GetName(), "timeStop" , std::to_string(ts_stop));
+  //getObjectsManager()->addMetadata(mChargeHistogramCurrent->GetName(), "timeMean" , std::to_string(ts_mean));
+
+  double ts_sum = 0; 
+  //ILOG(Info) << "timestamps vector is currently = \n" << ENDM;
+  for (auto const& ts : timestamps){
+    ts_sum += ts;
+    //ILOG(Info) << ts << ", " << ENDM ;
+  }
+  //ILOG(Info) << "\n(end of vector)" <<ENDM;
+  ts_mean = ts_sum / timestamps.size();
+  
+  
+  getObjectsManager()->getMonitorObject(mChargeHistogramCurrent->GetName())->addOrUpdateMetadata("timeStart", std::to_string(ts_start));
+  getObjectsManager()->getMonitorObject(mChargeHistogramCurrent->GetName())->addOrUpdateMetadata("timeStop", std::to_string(ts_stop));
+  getObjectsManager()->getMonitorObject(mChargeHistogramCurrent->GetName())->addOrUpdateMetadata("timeMean", std::to_string(ts_mean));
+  std::map<std::string, std::string> myMap = getObjectsManager()->getMonitorObject(mChargeHistogramCurrent->GetName())->getMetadataMap();
+
+  for(auto elem : myMap)
+  {
+     ILOG(Info) << "\n\nnext map elem: " << elem.first << " " << elem.second << "\n\n\n" << ENDM;
+  }
+  timestamps={};
+
+  //auto mo = getObjectsManager()->getMonitorObject(mChargeHistogramCurrent->GetName());
+  //qcdb.storeMO(mo, 1234, 4321);
+
+
 }
 
 void BasicDigitQcTaskPlus::endOfActivity(Activity& /*activity*/)

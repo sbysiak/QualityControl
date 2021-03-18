@@ -26,6 +26,14 @@
 #include "TMultiGraph.h"
 #include "Rtypes.h"
 
+#include "QualityControl/QcInfoLogger.h"
+#include "FT0/BasicDigitQcTaskPlus.h"
+#include "FT0/Utilities.h"
+#include "DataFormatsFT0/Digit.h"
+#include "DataFormatsFT0/ChannelData.h"
+#include <Framework/InputRecord.h>
+
+
 using namespace o2::quality_control::core;
 
 namespace o2::quality_control_modules::ft0
@@ -59,6 +67,9 @@ class BasicDigitQcTaskPlus final : public TaskInterface
   int countIter;
   int countCycles;
   int countIterTotal;
+  EventWithChannelData event;
+  //Float_t randFloat;
+  std::vector<double> timestamps;
 };
 
 } // namespace o2::quality_control_modules::ft0
