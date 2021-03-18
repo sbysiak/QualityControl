@@ -57,16 +57,13 @@ class FT0DataProducer : public Task
     mTree->SetBranchAddress("FT0DIGITSBC", &pdigits);
     mTree->SetBranchAddress("FT0DIGITSCH", &pchannels);
 
-    if (mCounterTF<mTree->GetEntries()) {
-      mTree->GetEntry(mCounterTF);
-      pc.outputs().snapshot(Output{ "FT0", "DIGITSBC", 0, Lifetime::Timeframe }, digits);
-      pc.outputs().snapshot(Output{ "FT0", "DIGITSCH", 0, Lifetime::Timeframe }, channels);
-      mCounterTF++;
+    if (mCounterTF>=mTree->GetEntries()) {
+      mCounterTF=0;
     }
-    else {
-      pc.services().get<ControlService>().endOfStream();
-      pc.services().get<ControlService>().readyToQuit(QuitRequest::Me);     
-    }
+    mTree->GetEntry(mCounterTF);
+    pc.outputs().snapshot(Output{ "FT0", "DIGITSBC", 0, Lifetime::Timeframe }, digits);
+    pc.outputs().snapshot(Output{ "FT0", "DIGITSCH", 0, Lifetime::Timeframe }, channels);
+    mCounterTF++;
   }
 
  private:
