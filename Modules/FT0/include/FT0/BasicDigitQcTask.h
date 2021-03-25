@@ -54,6 +54,23 @@ class BasicDigitQcTask final : public TaskInterface
   std::unique_ptr<TH1F> mChargeHistogram;
   std::unique_ptr<TH1F> mTimeHistogram;
   std::unique_ptr<TH2F> mAmplitudeAndTime;
+  std::unique_ptr<TH2F> mChargePerChannel;
+  std::unique_ptr<TH2F> mTimePerChannel;
+
+  std::unique_ptr<TH1F> mTriggerHistChargeA;
+  std::unique_ptr<TH1F> mTriggerHistChargeC;
+
+  std::unique_ptr<TH1F> mTriggerHistTimeA;
+  std::unique_ptr<TH1F> mTriggerHistTimeC;
+  std::unique_ptr<TH1F> mTriggerHistOrA;
+  std::unique_ptr<TH1F> mTriggerHistOrC;
+  std::unique_ptr<TH1F> mTriggerHistCen;
+  std::unique_ptr<TH1F> mTriggerHistSCen;
+  std::unique_ptr<TH1F> mTriggerHistVertex;
+  std::unique_ptr<TH1F> mTriggerHistTriggers;
+  std::unique_ptr<TH2F> mTriggerHistTriggersCorr;
+
+
   std::unique_ptr<TTree> mTTree;
   EventWithChannelData mEvent;
 };
