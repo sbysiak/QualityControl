@@ -1,0 +1,98 @@
+{
+  "qc": {
+    "config": {
+      "database": {
+        "implementation": "CCDB",
+        "host": "ccdb-test.cern.ch:8080",
+        "username": "not_applicable",
+        "password": "not_applicable",
+        "name": "not_applicable"
+      },
+      "Activity": {
+        "number": "42",
+        "type": "2"
+      },
+      "monitoring": {
+        "url": "infologger:///debug?qc"
+      },
+      "consul": {
+        "url": "http://consul-test.cern.ch:8500"
+      },
+      "conditionDB": {
+        "url": "ccdb-test.cern.ch:8080"
+      }
+    },
+    "checks": {},
+    "postprocessing": {
+      "FT0TrendingTask": {
+        "active": "true",
+        "className": "o2::quality_control::postprocessing::TrendingTask",
+        "moduleName": "QualityControl",
+        "detectorName": "FT0",
+        "dataSources": [
+          {
+            "type": "repository",
+            "path": "qc/FT0/MO/BasicDigitQcTask",
+            "names": [ "chargeA" ],
+            "reductorName": "o2::quality_control_modules::common::TH1Reductor",
+            "moduleName": "QcCommon"
+          },
+          {
+            "type": "repository",
+            "path": "qc/FT0/MO/BasicDigitQcTask",
+            "names": [ "chargeC" ],
+            "reductorName": "o2::quality_control_modules::common::TH1Reductor",
+            "moduleName": "QcCommon"
+          }
+        ],
+        "plots": [
+          {
+            "name": "trendMean_chargeA",
+            "title": "Mean trend of chargeA",
+            "varexp": "chargeA.mean:time",
+            "selection": "",
+            "option": "*L",
+            "graphErrors": "0:chargeA.stddev"
+          },
+          {
+            "name": "trendMean_chargeC",
+            "title": "Mean trend of chargeA",
+            "varexp": "chargeC.mean:time",
+            "selection": "",
+            "option": "*L"
+          },
+          {
+            "name": "hMeans_chargeA",
+            "title": "Distribution of mean values in chargeA",
+            "varexp": "chargeA.mean",
+            "selection": "",
+            "option": ""
+          },
+          {
+            "name": "corr_mean_stddev_chargeA",
+            "title": "Correlation between the mean and stddev of the example histogram",
+            "varexp": "chargeA.mean:chargeA.stddev",
+            "selection": "",
+            "option": "*"
+          },
+          {
+            "name": "corr_mean_chargeA_chargeC",
+            "title": "Correlation between the means of chargeA and chargeC",
+            "varexp": "chargeA.mean:chargeC.mean",
+            "selection": "",
+            "option": "*"
+          }
+        ],
+        "initTrigger": [
+          "userorcontrol"
+        ],
+        "updateTrigger": [
+          "newobject:qcdb:qc/FT0/MO/BasicDigitQcTask/chargeA"
+        ],
+        "stopTrigger": [
+          "userorcontrol", "10 minutes"
+        ]
+      }
+    }
+  }
+}
