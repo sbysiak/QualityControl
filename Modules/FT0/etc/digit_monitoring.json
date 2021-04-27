@@ -35,7 +35,10 @@
               "query": "digits:FT0/DIGITSBC/0;channels:FT0/DIGITSCH/0"
             },
           "taskParameters": {
-            "ChannelIDs": "73,76,79,83,122,125,129,132"
+            "ChannelIDs": "73,76,79,83,122,125,129,132",
+            "binning_SumAmpC": "100, 0, 100",
+            "binning_OrbitPerBC": "256, 0, 256, 10, 0, 3564",
+            "binning_Amp_channel*": "100,-10,90"
           },
           "location": "local",
           "localMachines": [
