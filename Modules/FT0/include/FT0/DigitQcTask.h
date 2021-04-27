@@ -72,6 +72,8 @@ class DigitQcTask final : public TaskInterface
     return vecResult;
   }
 
+  void rebinFromConfig();
+
   static constexpr unsigned int sNchannels = 208;
   // Object which will be published
   std::unique_ptr<TH2F> mHistAmp2Ch;

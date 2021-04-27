@@ -21,6 +21,7 @@
 #include "DataFormatsFT0/Digit.h"
 #include "DataFormatsFT0/ChannelData.h"
 #include <Framework/InputRecord.h>
+#include <TROOT.h>
 
 namespace o2::quality_control_modules::ft0
 {
@@ -29,6 +30,49 @@ DigitQcTask::~DigitQcTask()
 {
   delete mListHistGarbage;
 }
+
+void DigitQcTask::rebinFromConfig()
+{
+  auto rebinHisto = [](std::string hName, std::string binning){
+    vector<std::string> tokenizedBinning;
+    boost::split(tokenizedBinning, binning, boost::is_any_of(","));
+    if(tokenizedBinning.size() == 3){
+      auto htmp = (TH1F*) gROOT->FindObject(hName.data());
+      htmp->SetBins(std::atof(tokenizedBinning[0].c_str()), std::atof(tokenizedBinning[1].c_str()), std::atof(tokenizedBinning[2].c_str()));
+    }
+    else if(tokenizedBinning.size() == 6){
+      auto htmp = (TH2F*) gROOT->FindObject(hName.data());
+      htmp->SetBins(std::atof(tokenizedBinning[0].c_str()), std::atof(tokenizedBinning[1].c_str()), std::atof(tokenizedBinning[2].c_str()),
+                    std::atof(tokenizedBinning[3].c_str()), std::atof(tokenizedBinning[4].c_str()), std::atof(tokenizedBinning[5].c_str()));
+    }
+    else{
+      ILOG(Warning) << "config: invalid binning parameter: " << hName << " -> "  << binning << ENDM;
+    }
+  };
+
+
+  std::string rebinKeyword = "binning";
+  for (auto& param : mCustomParameters) {
+    if (param.first.rfind(rebinKeyword, 0) != 0) continue;
+    std::string hName = param.first.substr(rebinKeyword.length()+1);
+    std::string binning = param.second.c_str();
+    if (hName.find('*') != std::string::npos) {
+      for (const auto& chID : mSetAllowedChIDs) {
+        std::string hNameCur = hName.substr(0,hName.find("*")) + std::to_string(chID) + hName.substr(hName.find("*")+1);
+        rebinHisto(hNameCur, binning);
+      }
+    }
+    else if (!gROOT->FindObject(hName.data())) {
+      ILOG(Warning) << "config: histogram named \"" << hName << "\" not found" << ENDM;
+      continue;
+    }
+    else {
+      rebinHisto(hName, binning);
+    }
+  }
+}
+
+
 
 void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
 {
@@ -117,6 +161,9 @@ void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
       getObjectsManager()->startPublishing(pairHistAmpVsTime.first->second);
     }
   }
+
+  rebinFromConfig();
+
   getObjectsManager()->startPublishing(mHistTime2Ch.get());
   getObjectsManager()->startPublishing(mHistAmp2Ch.get());
   getObjectsManager()->startPublishing(mHistOrbit2BC.get());
