@@ -38,12 +38,14 @@ void DigitQcTask::rebinFromConfig()
     boost::split(tokenizedBinning, binning, boost::is_any_of(","));
     if(tokenizedBinning.size() == 3){
       auto htmp = (TH1F*) gROOT->FindObject(hName.data());
-      htmp->SetBins(std::atof(tokenizedBinning[0].c_str()), std::atof(tokenizedBinning[1].c_str()), std::atof(tokenizedBinning[2].c_str()));
+      if (htmp->GetDimension() == 1) htmp->SetBins(std::atof(tokenizedBinning[0].c_str()), std::atof(tokenizedBinning[1].c_str()), std::atof(tokenizedBinning[2].c_str()));
+      else ILOG(Warning) << "config: trying to set 1D binning to " << htmp->GetDimension() << "D histogram" << ENDM;
     }
     else if(tokenizedBinning.size() == 6){
       auto htmp = (TH2F*) gROOT->FindObject(hName.data());
-      htmp->SetBins(std::atof(tokenizedBinning[0].c_str()), std::atof(tokenizedBinning[1].c_str()), std::atof(tokenizedBinning[2].c_str()),
-                    std::atof(tokenizedBinning[3].c_str()), std::atof(tokenizedBinning[4].c_str()), std::atof(tokenizedBinning[5].c_str()));
+      if (htmp->GetDimension() == 2) htmp->SetBins(std::atof(tokenizedBinning[0].c_str()), std::atof(tokenizedBinning[1].c_str()), std::atof(tokenizedBinning[2].c_str()),
+                                                   std::atof(tokenizedBinning[3].c_str()), std::atof(tokenizedBinning[4].c_str()), std::atof(tokenizedBinning[5].c_str()));
+      else ILOG(Warning) << "config: trying to set 2D binning to " << htmp->GetDimension() << "D histogram" << ENDM;
     }
     else{
       ILOG(Warning) << "config: invalid binning parameter: " << hName << " -> "  << binning << ENDM;
@@ -97,6 +99,8 @@ void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
   mHistTime2Ch->SetOption("colz");
   mHistAmp2Ch = std::make_unique<TH2F>("AmpPerChannel", "Amplitude vs Channel;Amp;Channel;", 4200, -100, 4100, sNchannels, 0, sNchannels);
   mHistAmp2Ch->SetOption("colz");
+  mHistAmp2Adc = std::make_unique<TH2F>("AmpPerADC", "Amplitude vs ADC;Amp;ADC;", 4200, -100, 4100, sNchannels*2, 0, sNchannels*2); // 2 ADC per channel
+  mHistAmp2Adc->SetOption("colz");
   mHistOrbit2BC = std::make_unique<TH2F>("OrbitPerBC", "BC-Orbit map;Orbit;BC;", 256, 0, 256, 3564, 0, 3564);
   mHistOrbit2BC->SetOption("colz");
 
@@ -121,6 +125,7 @@ void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
   mHistAverageTimeA = std::make_unique<TH1F>("AverageTimeA", "Average time(TCM), side A", 4100, -2050, 2050);
   mHistAverageTimeC = std::make_unique<TH1F>("AverageTimeC", "Average time(TCM), side C", 4100, -2050, 2050);
   mHistChannelID = std::make_unique<TH1F>("StatChannelID", "ChannelID statistics;ChannelID", sNchannels, 0, sNchannels);
+  mHistAdcID = std::make_unique<TH1F>("StatAdcID", "ADC ID = 2*ChID+kNumberADC;ADC ID", sNchannels*2, 0, sNchannels*2);
   mListHistGarbage = new TList();
   mListHistGarbage->SetOwner(kTRUE);
   std::vector<unsigned int> vecChannelIDs;
@@ -138,6 +143,8 @@ void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
 
   for (const auto& chID : mSetAllowedChIDs) {
     auto pairHistAmp = mMapHistAmp1D.insert({ chID, new TH1F(Form("Amp_channel%i", chID), Form("Amplitude, channel %i", chID), 4200, -100, 4100) });
+    auto pairHistAdc0Amp = mMapHistAdc0Amp1D.insert({ chID, new TH1F(Form("Amp_channel%i_ADC0", chID), Form("Amplitude, channel %i ADC 0", chID), 4200, -100, 4100) });
+    auto pairHistAdc1Amp = mMapHistAdc1Amp1D.insert({ chID, new TH1F(Form("Amp_channel%i_ADC1", chID), Form("Amplitude, channel %i ADC 1", chID), 4200, -100, 4100) });
     auto pairHistTime = mMapHistTime1D.insert({ chID, new TH1F(Form("Time_channel%i", chID), Form("Time, channel %i", chID), 4100, -2050, 2050) });
     auto pairHistBits = mMapHistPMbits.insert({ chID, new TH1F(Form("Bits_channel%i", chID), Form("Bits, channel %i", chID), mMapChTrgNames.size(), 0, mMapChTrgNames.size()) });
     auto pairHistAmpVsTime = mMapHistAmpVsTime.insert({ chID, new TH2F(Form("Amp_vs_time_channel%i", chID), Form("Amplitude vs time, channel %i;Amp;Time", chID), 420, -100, 4100, 410, -2050, 2050) });
@@ -147,6 +154,14 @@ void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
     if (pairHistAmp.second) {
       getObjectsManager()->startPublishing(pairHistAmp.first->second);
       mListHistGarbage->Add(pairHistAmp.first->second);
+    }
+    if (pairHistAdc0Amp.second) {
+      getObjectsManager()->startPublishing(pairHistAdc0Amp.first->second);
+      mListHistGarbage->Add(pairHistAdc0Amp.first->second);
+    }
+    if (pairHistAdc1Amp.second) {
+      getObjectsManager()->startPublishing(pairHistAdc1Amp.first->second);
+      mListHistGarbage->Add(pairHistAdc1Amp.first->second);
     }
     if (pairHistTime.second) {
       mListHistGarbage->Add(pairHistTime.first->second);
@@ -166,6 +181,7 @@ void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
 
   getObjectsManager()->startPublishing(mHistTime2Ch.get());
   getObjectsManager()->startPublishing(mHistAmp2Ch.get());
+  getObjectsManager()->startPublishing(mHistAmp2Adc.get());
   getObjectsManager()->startPublishing(mHistOrbit2BC.get());
   getObjectsManager()->startPublishing(mHistEventDensity2Ch.get());
   getObjectsManager()->startPublishing(mHistChDataBits.get());
@@ -177,6 +193,7 @@ void DigitQcTask::initialize(o2::framework::InitContext& /*ctx*/)
   getObjectsManager()->startPublishing(mHistAverageTimeA.get());
   getObjectsManager()->startPublishing(mHistAverageTimeC.get());
   getObjectsManager()->startPublishing(mHistChannelID.get());
+  getObjectsManager()->startPublishing(mHistAdcID.get());
 }
 
 void DigitQcTask::startOfActivity(Activity& activity)
@@ -184,6 +201,7 @@ void DigitQcTask::startOfActivity(Activity& activity)
   ILOG(Info, Support) << "startOfActivity" << activity.mId << ENDM;
   mHistTime2Ch->Reset();
   mHistAmp2Ch->Reset();
+  mHistAmp2Adc->Reset();
   mHistOrbit2BC->Reset();
   mHistEventDensity2Ch->Reset();
   mHistChDataBits->Reset();
@@ -195,7 +213,14 @@ void DigitQcTask::startOfActivity(Activity& activity)
   mHistAverageTimeA->Reset();
   mHistAverageTimeC->Reset();
   mHistChannelID->Reset();
+  mHistAdcID->Reset();
   for (auto& entry : mMapHistAmp1D) {
+    entry.second->Reset();
+  }
+  for (auto& entry : mMapHistAdc0Amp1D) {
+    entry.second->Reset();
+  }
+  for (auto& entry : mMapHistAdc1Amp1D) {
     entry.second->Reset();
   }
   for (auto& entry : mMapHistTime1D) {
@@ -246,13 +271,23 @@ void DigitQcTask::monitorData(o2::framework::ProcessingContext& ctx)
     }
 
     for (const auto& chData : vecChData) {
+      int chAdc = -999;
+      if (chData.ChainQTC & (1 << o2::ft0::ChannelData::kIsCFDinADCgate)){
+        if (chData.ChainQTC & (1 << o2::ft0::ChannelData::kNumberADC)) chAdc = 1;
+        else chAdc = 0;
+      }
+      int adcId = 2*chData.ChId + chAdc;
       mHistTime2Ch->Fill(static_cast<Double_t>(chData.CFDTime), static_cast<Double_t>(chData.ChId));
       mHistAmp2Ch->Fill(static_cast<Double_t>(chData.QTCAmpl), static_cast<Double_t>(chData.ChId));
+      mHistAmp2Adc->Fill(static_cast<Double_t>(chData.QTCAmpl), static_cast<Double_t>(adcId));
       mHistEventDensity2Ch->Fill(static_cast<Double_t>(chData.ChId), static_cast<Double_t>(digit.mIntRecord.differenceInBC(mStateLastIR2Ch[chData.ChId])));
       mStateLastIR2Ch[chData.ChId] = digit.mIntRecord;
       mHistChannelID->Fill(chData.ChId);
+      mHistAdcID->Fill(adcId);
       if (mSetAllowedChIDs.find(static_cast<unsigned int>(chData.ChId)) != mSetAllowedChIDs.end()) {
         mMapHistAmp1D[chData.ChId]->Fill(chData.QTCAmpl);
+        if(chAdc == 0)      mMapHistAdc0Amp1D[chData.ChId]->Fill(chData.QTCAmpl);
+        else if(chAdc == 1) mMapHistAdc1Amp1D[chData.ChId]->Fill(chData.QTCAmpl);
         mMapHistTime1D[chData.ChId]->Fill(chData.CFDTime);
         mMapHistAmpVsTime[chData.ChId]->Fill(chData.QTCAmpl, chData.CFDTime);
         for (const auto& entry : mMapChTrgNames) {
@@ -285,6 +320,7 @@ void DigitQcTask::reset()
   // clean all the monitor objects here
   mHistTime2Ch->Reset();
   mHistAmp2Ch->Reset();
+  mHistAmp2Adc->Reset();
   mHistOrbit2BC->Reset();
   mHistEventDensity2Ch->Reset();
   mHistChDataBits->Reset();
@@ -296,7 +332,14 @@ void DigitQcTask::reset()
   mHistAverageTimeA->Reset();
   mHistAverageTimeC->Reset();
   mHistChannelID->Reset();
+  mHistAdcID->Reset();
   for (auto& entry : mMapHistAmp1D) {
+    entry.second->Reset();
+  }
+  for (auto& entry : mMapHistAdc0Amp1D) {
+    entry.second->Reset();
+  }
+  for (auto& entry : mMapHistAdc1Amp1D) {
     entry.second->Reset();
   }
   for (auto& entry : mMapHistTime1D) {

@@ -77,6 +77,7 @@ class DigitQcTask final : public TaskInterface
   static constexpr unsigned int sNchannels = 208;
   // Object which will be published
   std::unique_ptr<TH2F> mHistAmp2Ch;
+  std::unique_ptr<TH2F> mHistAmp2Adc;
   std::unique_ptr<TH2F> mHistTime2Ch;
   std::unique_ptr<TH2F> mHistEventDensity2Ch;
   std::unique_ptr<TH2F> mHistOrbit2BC;
@@ -89,11 +90,14 @@ class DigitQcTask final : public TaskInterface
   std::unique_ptr<TH1F> mHistAverageTimeA;
   std::unique_ptr<TH1F> mHistAverageTimeC;
   std::unique_ptr<TH1F> mHistChannelID;
+  std::unique_ptr<TH1F> mHistAdcID;
   std::array<o2::InteractionRecord, sNchannels> mStateLastIR2Ch;
   std::map<o2::ft0::ChannelData::EEventDataBit, std::string> mMapChTrgNames;
   std::map<int, std::string> mMapDigitTrgNames;
   TList* mListHistGarbage;
   std::map<unsigned int, TH1F*> mMapHistAmp1D;
+  std::map<unsigned int, TH1F*> mMapHistAdc0Amp1D;
+  std::map<unsigned int, TH1F*> mMapHistAdc1Amp1D;
   std::map<unsigned int, TH1F*> mMapHistTime1D;
   std::map<unsigned int, TH1F*> mMapHistPMbits;
   std::map<unsigned int, TH2F*> mMapHistAmpVsTime;
